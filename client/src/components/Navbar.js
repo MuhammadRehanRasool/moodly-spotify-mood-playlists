@@ -4,18 +4,24 @@ import "./../css/Navbar.css";
 import MenuIcon from "@mui/icons-material/Menu";
 
 const Navbar = (props) => {
-  // let navigate = useNavigate();
-  // const logout = () => {
-  //   sessionStorage.removeItem("loggedin");
-  //   props.setSession(props.__init_session);
-  //   navigate("/");
-  // };
+  let navigate = useNavigate();
+  const logout = () => {
+    sessionStorage.removeItem("loggedin");
+    props.setSession(props.__init_session);
+    navigate("/");
+  };
+
+  const jumpTo = (name) => {
+    document.getElementById(name).scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <>
       <nav className="navbar navbar-expand-lg __Navbar">
         {/* <span className="navbar-brand brand-name">Moodly</span> */}
-        <span className="navbar-brand brand-name">
-          <img src="https://moodly.app/assets/img/logo-white-1.0.png" />
+        <span className="navbar-brand brand-name center-custom mx-5">
+          <img src="logo.png" className="name" />
+          <img src="music-note.webp" className="mx-2 icon" />
         </span>
         <button
           className="navbar-toggler"
@@ -30,54 +36,81 @@ const Navbar = (props) => {
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto">
-            {/* <li className="nav-item">
-              <Link"nav-link simple-nav-link active">
-                Home
-              </Link>
-            </li> */}
+            <li className="nav-item">
+              <button
+                className="Button-Custom-1 purple"
+                onClick={() => {
+                  jumpTo("home");
+                }}
+              >
+                <span className="content">
+                  <span className="type">Home</span>
+                </span>
+              </button>
+            </li>
+            <li className="nav-item signup">
+              <button
+                className="Button-Custom-1 purple"
+                onClick={() => {
+                  jumpTo("about");
+                }}
+              >
+                <span className="content">
+                  <span className="type">About</span>
+                </span>
+              </button>
+            </li>
+            <li className="nav-item signup">
+              <button
+                className="Button-Custom-1 purple"
+                onClick={() => {
+                  jumpTo("contact");
+                }}
+              >
+                <span className="content">
+                  <span className="type">Contact</span>
+                </span>
+              </button>
+            </li>
           </ul>
           <div className="form-inline my-2 my-lg-0">
             <ul className="navbar-nav mr-auto">
-              {!true ? (
+              {props.session.isLoggedIn ? (
                 <>
                   <li className="nav-item">
-                    <button className="Button-Custom-1 black">
+                    <Link to="/history" className="Button-Custom-1 upload-btn">
                       <span className="content">
-                        <span className="type">Log In</span>
+                        <span className="type">History</span>
                       </span>
-                    </button>
+                    </Link>
                   </li>
                   <li className="nav-item signup">
-                    <button className="Button-Custom-1 white">
+                    <button
+                      className="Button-Custom-1 upload-btn"
+                      onClick={logout}
+                    >
                       <span className="content">
-                        <span className="type">Register</span>
+                        <span className="type">Logout</span>
                       </span>
                     </button>
                   </li>
                 </>
               ) : (
                 <>
-                  <li className="nav-item">
-                    <button className="Button-Custom-1 black">
+                  <li className="nav-item signup">
+                    <Link to="/login" className="Button-Custom-1 upload-btn">
                       <span className="content">
-                        <span className="type">History</span>
+                        <span className="type">Log In</span>
                       </span>
-                    </button>
+                    </Link>
                   </li>
                   <li className="nav-item signup">
-                    <button className="Button-Custom-1 white">
+                    <Link to="/register" className="Button-Custom-1 upload-btn">
                       <span className="content">
-                        <span className="type">Profile</span>
+                        <span className="type">Register</span>
                       </span>
-                    </button>
+                    </Link>
                   </li>
-                  {/* <li className="nav-item signup">
-                    <button className="Button-Custom-1 white" onClick={logout}>
-                      <span className="content">
-                        <span className="type">Logout</span>
-                      </span>
-                    </button>
-                  </li> */}
                 </>
               )}
             </ul>

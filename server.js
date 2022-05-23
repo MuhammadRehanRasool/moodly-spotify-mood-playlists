@@ -4,8 +4,8 @@ const app = express();
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const path = require("path");
+const userRoute = require("./routes/userRoute");
 const dataRoute = require("./routes/dataRoute");
-const documentRoute = require("./routes/documentRoute");
 
 const cors = require("cors");
 const port = process.env.PORT || 4000;
@@ -24,8 +24,8 @@ mongoose.connect(
 app.use(express.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname, "client", "build")));
+app.use("/user", userRoute);
 app.use("/data", dataRoute);
-app.use("/document", documentRoute);
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "build", "index.html"));
