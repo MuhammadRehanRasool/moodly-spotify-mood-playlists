@@ -1,0 +1,9 @@
+.__Home {
+  width: 100%;
+  min-height: 100vh;
+  height: 100%;
+  background-image: linear-gradient(-60deg, #14aeee 0%, #410ad6 100%);
+  background-color: #410ad6;
+  height: 1060px;
+  padding-top: 290px;
+}
