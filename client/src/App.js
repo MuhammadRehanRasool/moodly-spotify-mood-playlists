@@ -9,10 +9,11 @@ function App() {
     <div className="App">
       <Router>
         <Routes>
-          <Route path="/" element={<Layout />} />
+          <Route path="/" element={<Layout isHistory={false}/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/*" element={<Layout />} />
+          <Route path="/history" element={<Layout isHistory={true}/>} />
+          <Route path="/*" element={<Layout isHistory={false}/>} />
         </Routes>
       </Router>
     </div>

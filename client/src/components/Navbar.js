@@ -19,10 +19,12 @@ const Navbar = (props) => {
     <>
       <nav className="navbar navbar-expand-lg __Navbar">
         {/* <span className="navbar-brand brand-name">Moodly</span> */}
-        <span className="navbar-brand brand-name center-custom mx-5">
-          <img src="logo.png" className="name" />
-          <img src="music-note.webp" className="mx-2 icon" />
-        </span>
+        <Link to="/">
+          <span className="navbar-brand brand-name center-custom mx-5">
+            <img src="logo.png" className="name" />
+            <img src="music-note.webp" className="mx-2 icon" />
+          </span>
+        </Link>
         <button
           className="navbar-toggler"
           type="button"

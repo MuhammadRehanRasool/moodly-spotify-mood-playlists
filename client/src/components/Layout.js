@@ -3,7 +3,10 @@ import Navbar from "./Navbar";
 import Home from "./../views/Home";
 import About from "./../views/About";
 import Contact from "./../views/Contact";
-export default function Layout() {
+import Playlist from "./../views/Playlist";
+import History from "./../views/History";
+import { CONSTANT, getCookie } from "../CONSTANT";
+export default function Layout(props) {
   let __init_session = {
     personal: {
       name: "",
@@ -24,12 +27,39 @@ export default function Layout() {
       });
     }
   }, []);
+  const [playlist, setPlaylist] = useState("");
+
+  useEffect(() => {
+    if (
+      getCookie("mood") &&
+      getCookie("mood") !== "" &&
+      getCookie("playlist") &&
+      getCookie("playlist") !== ""
+    ) {
+      setPlaylist(getCookie("playlist"));
+    }
+  }, []);
+
   return (
     <>
-      <Navbar session={data} setSession={setData} />
-      <Home session={data} />
-      <About />
-      <Contact />
+      {props.isHistory ? (
+        <>
+          <Navbar session={data} setSession={setData} />
+          <History session={data} />
+        </>
+      ) : (
+        <>
+          <Navbar
+            session={data}
+            setSession={setData}
+            __init_session={__init_session}
+          />
+          <Home session={data} setPlaylist={setPlaylist} />
+          {playlist !== "" ? <Playlist link={playlist} /> : ""}
+          <About />
+          <Contact />
+        </>
+      )}
     </>
   );
 }

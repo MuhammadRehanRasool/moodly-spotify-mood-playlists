@@ -6,7 +6,7 @@ const dataModel = new mongoose.Schema({
     ref: "users",
   },
   mood: {
-    type: Array,
+    type: String,
   },
   addedAt: { type: Date, default: Date.now },
 });

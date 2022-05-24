@@ -1,22 +1,32 @@
 export const CONSTANT = {
-  server: "http://localhost:4000/",
-  client: "http://localhost:3000/",
-  RAPID_API_KEY: "REDACTED_RAPID_API_KEY",
-  RAPID_API_DOMAIN: "faceanalysis.p.rapidapi.com",
+  server: "http://localhost:4000/", // CHANGE WITH YOUR BACKEND LINK (/ is MUST IN END)
+  client: "http://localhost:3000/", // CHANGE WITH YOUR FRONTEND LINK (/ is MUST IN END)
+  RAPID_API_KEY: "REDACTED_RAPID_API_KEY", // YOURS ALREADY
+  RAPID_API_DOMAIN: "faceanalysis.p.rapidapi.com", // YOURS ALREADY
+  SPOTIFY_CLIENT_ID: "REDACTED_SPOTIFY_CLIENT_ID", // YOURS ALREADY
   moods: ["😀", "😞", "😡", "😲"],
-  moodsMetaData: [{
-    name:"happy",
-    index:0
-  },{
-    name:"sad",
-    index:1
-  },{
-    name:"angry",
-    index:2
-  },{
-    name:"surprise",
-    index:3
-  }],
+  moodsMetaData: [
+    {
+      name: "happy",
+      index: 0,
+      spotify: "1RxmKsnfOfeiPVxleFoXTq",
+    },
+    {
+      name: "sad",
+      index: 1,
+      spotify: "4OvKlzSxuGo7TOgdMx9DLj",
+    },
+    {
+      name: "angry",
+      index: 2,
+      spotify: "5rtJmAT3cFKpkkhFaFcKzR",
+    },
+    {
+      name: "surprise",
+      index: 3,
+      spotify: "309c7Hj0B77oswGnNfx3S0",
+    },
+  ],
 };
 
 export const checkLoginFromLogin = () => {
@@ -67,3 +77,22 @@ export const isMessage = () => {
 export const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
+
+// Set a Cookie
+export function setCookie(cName, cValue, expDays) {
+  let date = new Date();
+  date.setTime(date.getTime() + (expDays * 24 * 60 * 60 * 1000));
+  const expires = "expires=" + date.toUTCString();
+  document.cookie = cName + "=" + cValue + "; " + expires + "; path=/";
+}
+
+export function getCookie(cName) {
+  const name = cName + "=";
+  const cDecoded = decodeURIComponent(document.cookie); //to be careful
+  const cArr = cDecoded .split('; ');
+  let res;
+  cArr.forEach(val => {
+      if (val.indexOf(name) === 0) res = val.substring(name.length);
+  })
+  return res;
+}

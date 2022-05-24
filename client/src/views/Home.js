@@ -3,7 +3,12 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import "./../css/Home.css";
 import axios from "axios";
-import { CONSTANT, capitalizeFirstLetter } from "../CONSTANT";
+import {
+  CONSTANT,
+  capitalizeFirstLetter,
+  setCookie,
+  getCookie,
+} from "../CONSTANT";
 
 const Input = styled("input")({
   display: "none",
@@ -26,28 +31,7 @@ export default function Home(props) {
   }, [CONSTANT.moods, looper]);
 
   const [file, setFile] = useState([]);
-  const [data, setData] = useState({
-    detections: [
-      {
-        emotions: {
-          angry: 0.952103316783905,
-          sad: 0.0027534549590200186,
-          neutral: 0.00018628870020620525,
-          happy: 0.00008021290705073625,
-          disgust: 0.01926462911069393,
-          surprise: 0.023346250876784325,
-          fear: 0.002265866845846176,
-        },
-        crop: {
-          x1: 0.3993297219276428,
-          x2: 0.6170467138290405,
-          y1: 0.21315857768058777,
-          y2: 0.6117115020751953,
-          score: 0.9982402324676514,
-        },
-      },
-    ],
-  });
+  const [data, setData] = useState();
   const [mood, setMood] = useState("");
 
   useEffect(() => {
@@ -55,6 +39,17 @@ export default function Home(props) {
       fetchMood();
     }
   }, [file]);
+
+  useEffect(() => {
+    if (
+      getCookie("mood") &&
+      getCookie("mood") !== "" &&
+      getCookie("playlist") &&
+      getCookie("playlist") !== ""
+    ) {
+      setMood(getCookie("mood"));
+    }
+  }, []);
 
   const fetchMood = async () => {
     const data = new FormData();
@@ -78,12 +73,28 @@ export default function Home(props) {
           response.data?.detections.length > 0
             ? response.data?.detections[0]?.emotions
             : null;
+        emotions = {
+          angry: emotions["angry"],
+          happy: emotions["happy"],
+          sad: emotions["sad"],
+          surprise: emotions["surprise"],
+        };
         let moodNow = Object.keys(emotions).reduce((a, b) =>
           emotions[a] > emotions[b] ? a : b
         );
         setMood(moodNow);
-        addToDatabase(moodNow);
+        setCookie("mood", moodNow, 1);
+        if (props.session.isLoggedIn) {
+          addToDatabase(moodNow);
+        }
         setFile([]);
+        let temp = CONSTANT.moodsMetaData.filter((a, b) => {
+          return a.name === moodNow;
+        });
+        if (temp.length > 0) {
+          setCookie("playlist", temp[0].spotify, 1);
+          props.setPlaylist(temp[0].spotify);
+        }
       })
       .catch(function (error) {
         console.error(error);
@@ -98,7 +109,7 @@ export default function Home(props) {
       })
       .then((responce) => {
         if (responce.status === 200) {
-          // Ok
+          //
         }
       })
       .catch((error) => {
@@ -169,7 +180,8 @@ export default function Home(props) {
             </div>
             <div className="responce mt-4">
               <p>
-                {mood !== "" ? "You are" : "What are you"} currently feeling{mood !== "" ? "" : "?"}{" "}
+                {mood !== "" ? "You are" : "What are you"} currently feeling
+                {mood !== "" ? "" : "?"}{" "}
                 {mood === ""
                   ? CONSTANT.moods[looper]
                   : CONSTANT.moods[
