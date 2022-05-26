@@ -3,6 +3,7 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import "./../css/Home.css";
 import axios from "axios";
+import OpenCamera from "./../components/OpenCamera";
 import {
   CONSTANT,
   capitalizeFirstLetter,
@@ -14,8 +15,23 @@ const Input = styled("input")({
   display: "none",
 });
 
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
 export default function Home(props) {
   const [looper, setLooper] = useState(0);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   useEffect(() => {
     let timeout;
@@ -33,9 +49,11 @@ export default function Home(props) {
   const [file, setFile] = useState([]);
   const [data, setData] = useState();
   const [mood, setMood] = useState("");
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (file.length > 0) {
+      handleClose();
       fetchMood();
     }
   }, [file]);
@@ -52,6 +70,7 @@ export default function Home(props) {
   }, []);
 
   const fetchMood = async () => {
+    setError(false);
     const data = new FormData();
     data.append("image_file", file[0], file[0].name);
 
@@ -68,32 +87,38 @@ export default function Home(props) {
     axios
       .request(options)
       .then(function (response) {
-        setData(response.data);
-        let emotions =
-          response.data?.detections.length > 0
-            ? response.data?.detections[0]?.emotions
-            : null;
-        emotions = {
-          angry: emotions["angry"],
-          happy: emotions["happy"],
-          sad: emotions["sad"],
-          surprise: emotions["surprise"],
-        };
-        let moodNow = Object.keys(emotions).reduce((a, b) =>
-          emotions[a] > emotions[b] ? a : b
-        );
-        setMood(moodNow);
-        setCookie("mood", moodNow, 1);
-        if (props.session.isLoggedIn) {
-          addToDatabase(moodNow);
-        }
-        setFile([]);
-        let temp = CONSTANT.moodsMetaData.filter((a, b) => {
-          return a.name === moodNow;
-        });
-        if (temp.length > 0) {
-          setCookie("playlist", temp[0].spotify, 1);
-          props.setPlaylist(temp[0].spotify);
+        if (response.data?.detections.length > 0) {
+          setData(response.data);
+          let emotions =
+            response.data?.detections.length > 0
+              ? response.data?.detections[0]?.emotions
+              : null;
+          emotions = {
+            angry: emotions["angry"],
+            happy: emotions["happy"],
+            sad: emotions["sad"],
+            surprise: emotions["surprise"],
+          };
+          let moodNow = Object.keys(emotions).reduce((a, b) =>
+            emotions[a] > emotions[b] ? a : b
+          );
+          setMood(moodNow);
+          setCookie("mood", moodNow, 1);
+          if (props.session.isLoggedIn) {
+            addToDatabase(moodNow);
+          }
+          setFile([]);
+          let temp = CONSTANT.moodsMetaData.filter((a, b) => {
+            return a.name === moodNow;
+          });
+          if (temp.length > 0) {
+            setCookie("playlist", temp[0].spotify, 1);
+            props.setPlaylist(temp[0].spotify);
+          }
+        } else {
+          setError(true);
+          handleOpen();
+          setFile([]);
         }
       })
       .catch(function (error) {
@@ -177,7 +202,34 @@ export default function Home(props) {
                   </span>
                 </Button>
               </label>
+              <span className="text-light text-italic m-3">OR</span>
+              <Button
+                variant="contained"
+                component="span"
+                className="Button-Custom-1 upload-custom upload-btn up-it"
+                onClick={handleOpen}
+              >
+                <span className="up-it center-custom">
+                  {file.length > 0 ? (
+                    <span className="type up-it center-custom">
+                      <div
+                        className="spinner-border text-light"
+                        role="status"
+                      ></div>
+                      <span className="mx-3">Please Wait...</span>
+                    </span>
+                  ) : (
+                    <span className="type up-it">Capture Photo</span>
+                  )}
+                </span>
+              </Button>
             </div>
+            <OpenCamera
+              open={open}
+              handleClose={handleClose}
+              setFile={setFile}
+              error={error}
+            />
             <div className="responce mt-4">
               <p>
                 {mood !== "" ? "You are" : "What are you"} currently feeling
@@ -190,6 +242,9 @@ export default function Home(props) {
                       })[0].index
                     ]}{" "}
                 {mood !== "" ? capitalizeFirstLetter(mood) : ""}
+              </p>
+              <p>
+                Scroll down to see <span className="inner">playlist</span>
               </p>
             </div>
           </div>

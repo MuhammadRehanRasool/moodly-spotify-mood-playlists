@@ -1,6 +1,6 @@
 export const CONSTANT = {
-  server: "http://localhost:4000/", // CHANGE WITH YOUR BACKEND LINK (/ is MUST IN END)
-  client: "http://localhost:3000/", // CHANGE WITH YOUR FRONTEND LINK (/ is MUST IN END)
+  server: "https://test0075.herokuapp.com/", // CHANGE WITH YOUR BACKEND LINK (/ is MUST IN END)
+  client: "https://test0075.herokuapp.com/", // CHANGE WITH YOUR FRONTEND LINK (/ is MUST IN END)
   RAPID_API_KEY: "REDACTED_RAPID_API_KEY", // YOURS ALREADY
   RAPID_API_DOMAIN: "faceanalysis.p.rapidapi.com", // YOURS ALREADY
   SPOTIFY_CLIENT_ID: "REDACTED_SPOTIFY_CLIENT_ID", // YOURS ALREADY

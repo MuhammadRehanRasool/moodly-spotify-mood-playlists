@@ -28,7 +28,7 @@ export default function Contact() {
             </div>
             <div className="col-6">
               <div className="attr text-center text-light">Email</div>
-              <div className="desc text-center">hello@example.com</div>
+              <div className="desc text-center"><a href="mailto:hello@example.com" className="text-light" target="_blank">hello@example.com</a></div>
             </div>
           </div>
         </div>

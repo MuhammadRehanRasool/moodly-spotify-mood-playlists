@@ -96,15 +96,19 @@ export default function Playlist(props) {
     <div className="__Playlist">
       {/* <SpotifyConnection /> */}
       <div className="content h-100 center-custom">
-        <h1>Playlist For You</h1>
-        <div className="mt-4 mb-4">
-          <img src="arrow.svg" loading="lazy" alt="" className="arrow" />
-        </div>
+        {data && (
+          <>
+            <h1>Playlist For You</h1>
+            <div className="mt-4 mb-4">
+              <img src="arrow.svg" loading="lazy" alt="" className="arrow" />
+            </div>
+          </>
+        )}
         <div className="tracks row center-custom">
           {data &&
             data.items.map((one, i) => {
               return (
-                <div className="col-lg-3 col-sm-12 col-md-4 mt-2 mb-2 center-custom">
+                <div className="col-lg-3 col-sm-12 col-md-4 mt-2 mb-5 center-custom">
                   <div className="card">
                     <a
                       href={one.track.external_urls.spotify}
@@ -127,6 +131,19 @@ export default function Playlist(props) {
                 </div>
               );
             })}
+        </div>
+        <div className="mt-3 d-flex justify-content-center align-items-center flex-column">
+          <h1>Playlist Link</h1>
+          <div className="mt-4 mb-4">
+            <img src="arrow.svg" loading="lazy" alt="" className="arrow" />
+          </div>
+          <a
+            href={`https://open.spotify.com/playlist/${props.link}`}
+            className="Button-Custom-1 black"
+            target="_blank"
+          >
+            Open
+          </a>
         </div>
       </div>
     </div>

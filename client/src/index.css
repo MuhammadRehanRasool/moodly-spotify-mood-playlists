@@ -11,9 +11,25 @@ body {
 body,
 html {
   width: 100%;
-  margin: 0;
-  padding: 0;
+  margin: 0!important;
+  padding: 0!important;
   overflow: auto;
+}
+.__OpenCamera{
+  border-radius: 30px;
+  background-color: rgb(255, 255, 255, .9);
+  padding: 4rem;
+}
+.__OpenCamera .webcam-img video, .__OpenCamera .webcam-img img{
+  border-radius: 30px;
+}
+.__OpenCamera .webcam-img{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.arrow.invert {
+  filter: invert(1) brightness(1);
 }
 /* Input */
 .custom-input .input-group-text {

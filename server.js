@@ -28,7 +28,6 @@ app.use(express.static(path.join(__dirname, "client", "build")));
 app.use("/user", userRoute);
 app.use("/data", dataRoute);
 
-
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "build", "index.html"));
   // res.send("Hey, I'm backend!");
