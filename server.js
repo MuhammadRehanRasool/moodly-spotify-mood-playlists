@@ -8,12 +8,10 @@ const userRoute = require("./routes/userRoute");
 const dataRoute = require("./routes/dataRoute");
 
 const cors = require("cors");
-const port = process.env.PORT || 4000;
-
-const uri =
-  "REDACTED_MONGODB_URI";
 
 dotenv.config();
+const port = process.env.PORT || 4000;
+const uri = process.env.MONGODB_URI;
 mongoose.connect(
   uri,
   { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false },

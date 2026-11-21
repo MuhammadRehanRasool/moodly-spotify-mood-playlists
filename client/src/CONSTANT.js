@@ -1,9 +1,10 @@
 export const CONSTANT = {
-  server: "https://test0075.herokuapp.com/", // CHANGE WITH YOUR BACKEND LINK (/ is MUST IN END)
-  client: "https://test0075.herokuapp.com/", // CHANGE WITH YOUR FRONTEND LINK (/ is MUST IN END)
-  RAPID_API_KEY: "REDACTED_RAPID_API_KEY", // YOURS ALREADY
-  RAPID_API_DOMAIN: "faceanalysis.p.rapidapi.com", // YOURS ALREADY
-  SPOTIFY_CLIENT_ID: "REDACTED_SPOTIFY_CLIENT_ID", // YOURS ALREADY
+  // Both URLs must end with "/"
+  server: process.env.REACT_APP_SERVER_URL || "http://localhost:4000/",
+  client: process.env.REACT_APP_CLIENT_URL || "http://localhost:3000/",
+  RAPID_API_KEY: process.env.REACT_APP_RAPID_API_KEY,
+  RAPID_API_DOMAIN: "faceanalysis.p.rapidapi.com",
+  SPOTIFY_CLIENT_ID: process.env.REACT_APP_SPOTIFY_CLIENT_ID,
   moods: ["😀", "😞", "😡", "😲"],
   moodsMetaData: [
     {
