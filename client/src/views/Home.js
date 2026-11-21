@@ -243,9 +243,13 @@ export default function Home(props) {
                     ]}{" "}
                 {mood !== "" ? capitalizeFirstLetter(mood) : ""}
               </p>
-              <p>
-                Scroll down to see <span className="inner">playlist</span>
-              </p>
+              {mood !== "" ? (
+                <p>
+                  Scroll down to see <span className="inner">playlist</span>
+                </p>
+              ) : (
+                ""
+              )}
             </div>
           </div>
           <div className="col-6 center-custom">
